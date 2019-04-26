@@ -1,0 +1,19 @@
+Source: prometheus-webhook-snmp
+Section: net
+Priority: optional
+Maintainer: Volker Theile <vtheile@suse.com>
+Build-Depends: debhelper (>> 11), tox
+Standards-Version: 4.3.0
+
+Package: prometheus-webhook-snmp
+Architecture: all
+Depends: ${misc:Depends},
+         python3-prometheus-client,
+         python3-click,
+         python3-cherrypy3,
+         python3-dateutil,
+         python3-pysnmp4
+Priority: optional
+Description: Prometheus Alertmanager receiver for SNMP traps
+ prometheus-webhook-snmp is a Prometheus Alertmanager receiver that
+ translates incoming notifications into SNMP traps.

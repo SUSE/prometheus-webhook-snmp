@@ -1,0 +1,7 @@
+Format: http://dep.debian.net/deps/dep5
+Upstream-Contact: Volker Theile <vtheile@suse.com>
+Source: https://gitlab.suse.de/vtheile/prometheus-webhook-snmp
+
+Files: *
+Copyright: 2019 SUSE Linux GmbH
+License: GPL-3

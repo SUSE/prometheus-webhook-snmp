@@ -1,0 +1,130 @@
+#!/usr/bin/python3
+import datetime
+import logging
+import sys
+
+import click
+
+from prometheus_webhook_snmp import utils
+
+
+pass_context = click.make_pass_decorator(utils.Context, ensure=True)
+
+
+@click.group(help='Prometheus Alertmanager receiver that translates '
+                  'notifications into SNMP traps.')
+@click.option('--debug',
+              is_flag=True,
+              help='Enable debug output.')
+@click.option('--snmp-host',
+              default='localhost',
+              show_default=True,
+              help='The host (IP or FQDN) of the SNMP trap receiver.')
+@click.option('--snmp-port',
+              default=162,
+              show_default=True,
+              help='The port of the SNMP trap receiver.')
+@click.option('--snmp-community',
+              default='public',
+              show_default=True,
+              help='The SNMP community string.')
+@click.option('--snmp-retries',
+              default=5,
+              show_default=True,
+              help='Maximum number of request retries.')
+@click.option('--snmp-timeout',
+              default=1,
+              show_default=True,
+              help='Response timeout in seconds.')
+@click.option('--alert-oid-label',
+              default='oid',
+              show_default=True,
+              help='The label where to find the OID.')
+@click.option('--trap-oid-prefix',
+              default='1.3.6.1.4.1.7057.12',
+              show_default=True,
+              help='The OID prefix for trap variable bindings.')
+@click.option('--trap-default-oid',
+              default='1.3.6.1.4.1.7057.12.1.2.1',
+              show_default=True,
+              help='The trap OID if none is found in the Prometheus alert labels.')
+@pass_context
+def cli(ctx, debug, snmp_host, snmp_port, snmp_community, snmp_retries,
+        snmp_timeout, alert_oid_label, trap_oid_prefix, trap_default_oid):
+    ctx.config['debug'] = debug
+    ctx.config['snmp_host'] = snmp_host
+    ctx.config['snmp_port'] = snmp_port
+    ctx.config['snmp_community'] = snmp_community
+    ctx.config['snmp_retries'] = snmp_retries
+    ctx.config['snmp_timeout'] = snmp_timeout
+    ctx.config['alert_oid_label'] = alert_oid_label
+    ctx.config['trap_default_oid'] = trap_default_oid
+    ctx.config['trap_oid_prefix'] = trap_oid_prefix
+
+    if ctx.config['debug']:
+        logging.basicConfig(level=logging.DEBUG)
+
+    return 0
+
+
+@cli.command(name='run', help='Start the HTTP server.')
+@click.option('--host',
+              default='0.0.0.0',
+              show_default=True,
+              help='Host to use.')
+@click.option('--port',
+              default=9099,
+              show_default=True,
+              help='Port to listen for Prometheus Alertmanager notifications.')
+@click.option('--metrics',
+              is_flag=True,
+              help='Provide Prometheus metrics from this receiver.')
+@pass_context
+def run(ctx, host, port, metrics):
+    ctx.config['host'] = host
+    ctx.config['port'] = port
+    ctx.config['metrics'] = metrics
+    utils.run_http_server(ctx)
+    sys.exit(0)
+
+
+@cli.command(name='test', help='Trigger a SNMP trap.')
+@pass_context
+def test(ctx):
+    trap_data = utils.parse_notification(ctx.config, {
+        'receiver': 'bar',
+        'status': 'firing',
+        'alerts': [{
+            'status': 'firing',
+            'labels': {
+                'alertname': 'load_0',
+                'instance': 'localhost:9100',
+                'job': 'node-exporter',
+                'severity': 'info',
+                'foo': 'bar',
+                'xyz': 'abc',
+                'oid': ctx.config['trap_default_oid']
+            },
+            'annotations': {
+                'description': 'localhost:9100 of job node-exporter load is over 0!',
+                'summary': 'Instance localhost:9100 load is over 0!'
+            },
+            'startsAt': datetime.datetime.utcnow().isoformat() + 'Z',
+            'endsAt': '0001-01-01T00:00:00Z',
+            'generatorURL': 'http://foo:9090/graph?...'
+        }],
+        'groupLabels': {},
+        'commonLabels': {},
+        'commonAnnotations': {},
+        'externalURL': '',
+        'version': '4',
+        'groupKey': '{}:{}'
+    })
+    if trap_data is not None:
+        for data in trap_data:
+            utils.send_snmp_trap(ctx.config, data)
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    sys.exit(cli())  # pylint: disable=no-value-for-parameter

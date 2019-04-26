@@ -1,0 +1,7 @@
+CherryPy==18.1.1
+Click==7.0
+pysnmp==4.4.9
+dateutils==0.6.6
+pytest==4.4.0
+pylint==2.3.1
+prometheus_client==0.6.0

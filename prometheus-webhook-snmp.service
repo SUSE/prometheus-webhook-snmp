@@ -1,0 +1,11 @@
+[Unit]
+Description=Prometheus Alertmanager receiver for SNMP traps
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/prometheus-webhook-snmp run
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
