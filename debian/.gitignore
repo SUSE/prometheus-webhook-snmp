@@ -1,0 +1,5 @@
+*.debhelper.log
+*.substvars
+/.debhelper/
+/prometheus-webhook-snmp/
+/files

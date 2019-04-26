@@ -1,0 +1,5 @@
+prometheus-webhook-snmp (1.0-1) stable; urgency=low
+
+  * Initial Debian packaging.
+
+ -- Volker Theile <vtheile@suse.com>  Wed, 10 Apr 2019 15:48:08 +0200
