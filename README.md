@@ -46,24 +46,23 @@ Example Prometheus alert rule:
 
 ```yaml
 groups:
-- name: test
+- name: mon
   rules:
-  - alert: load_0
-    expr: node_load1 > 0
-    for: 10s
+  - alert: low monitor quorum count
+    expr: sum(ceph_mon_quorum_status) < 3
     labels:
-      severity: info
-      oid: "1.3.6.1.4.1.7057.12.1.2.2"
+      severity: critical
+      type: ceph_default
+      oid: 1.3.6.1.4.1.50495.15.1.2.3.1
     annotations:
-      summary: "Instance {{ $labels.instance }} load is over 0!"
-      description: "{{ $labels.instance }} of job {{ $labels.job }} load is over 0!"
+      description: Monitor count in quorum is low.
 ```
 
 ### --trap-oid-prefix
-The OID prefix for trap variable bindings. Defaults to ``1.3.6.1.4.1.7057.12``.
+The OID prefix for trap variable bindings. Defaults to ``1.3.6.1.4.1.50495.15``.
 
 ### --trap-default-oid
-The trap OID if none is found in the Prometheus alert labels. Defaults to ``1.3.6.1.4.1.7057.12.1.2.1``.
+The trap OID if none is found in the Prometheus alert labels. Defaults to ``1.3.6.1.4.1.50495.15.1.2.1``.
 
 ## Command ``run``
 
