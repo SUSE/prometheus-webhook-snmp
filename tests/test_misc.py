@@ -11,7 +11,7 @@ NOTIFICATION_FIRING = {
             'alertname': 'load_1',
             'job': 'node-exporter',
             'severity': 'warning',
-            'oid': '1.3.6.1.4.1.7057.12.1.2.2'
+            'oid': '1.3.6.1.4.1.50495.15.1.2.2'
         },
         'annotations': {
             'description': 'aaa'
@@ -80,7 +80,7 @@ class FunctionTestCase(unittest.TestCase):
         }, NOTIFICATION_FIRING)
         self.assertIsInstance(trap_data, list)
         trap_data = trap_data[0]
-        self.assertEqual(trap_data['oid'], '1.3.6.1.4.1.7057.12.1.2.2')
+        self.assertEqual(trap_data['oid'], '1.3.6.1.4.1.50495.15.1.2.2')
         self.assertEqual(trap_data['status'], 'firing')
         self.assertEqual(trap_data['severity'], 'warning')
         self.assertEqual(trap_data['instance'], 'n/a')

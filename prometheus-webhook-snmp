@@ -41,11 +41,11 @@ pass_context = click.make_pass_decorator(utils.Context, ensure=True)
               show_default=True,
               help='The label where to find the OID.')
 @click.option('--trap-oid-prefix',
-              default='1.3.6.1.4.1.7057.12',
+              default='1.3.6.1.4.1.50495.15',
               show_default=True,
               help='The OID prefix for trap variable bindings.')
 @click.option('--trap-default-oid',
-              default='1.3.6.1.4.1.7057.12.1.2.1',
+              default='1.3.6.1.4.1.50495.15.1.2.1',
               show_default=True,
               help='The trap OID if none is found in the Prometheus alert labels.')
 @pass_context

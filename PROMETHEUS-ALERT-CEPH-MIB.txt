@@ -7,16 +7,14 @@ IMPORTS
         FROM SNMPv2-TC
 ;
 
-suse       OBJECT IDENTIFIER ::= { enterprises 7057 }
-prometheus OBJECT IDENTIFIER ::= { suse 12 }
+ceph       OBJECT IDENTIFIER ::= { enterprises 50495 }
+prometheus OBJECT IDENTIFIER ::= { ceph 15 }
 
 prometheusAlert MODULE-IDENTITY
     LAST-UPDATED "201904010000Z" -- 1. Apr 2019
-    ORGANIZATION "SUSE Linux GmbH"
-    CONTACT-INFO "
-        https://www.suse.com
-        email: suse-oid@suse.de"
-    DESCRIPTION  "Prometheus SNMP MIB"
+    ORGANIZATION "The Ceph Project"
+    CONTACT-INFO "https://ceph.com"
+    DESCRIPTION  "Prometheus Alert SNMP MIB"
     REVISION     "201904010000Z" -- 1. Apr 2019
     DESCRIPTION  "Initial version."
     ::= { prometheus 1 }
@@ -124,10 +122,10 @@ prometheusAlertClusterHealthTrapHealthError NOTIFICATION-TYPE
                     prometheusAlertNotificationRawData
                 }
     STATUS      current
-    DESCRIPTION "Ceph in error for > 5m."
+    DESCRIPTION "Ceph in health_error state for more than 5m."
 ::= { prometheusAlertClusterHealthTraps 1 }
 
-prometheusAlertClusterHealthTrapUnhealthy NOTIFICATION-TYPE
+prometheusAlertClusterHealthTrapHealthWarn NOTIFICATION-TYPE
     OBJECTS     {
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
@@ -139,10 +137,10 @@ prometheusAlertClusterHealthTrapUnhealthy NOTIFICATION-TYPE
                     prometheusAlertNotificationRawData
                 }
     STATUS      current
-    DESCRIPTION "Ceph not healthy for > 15m."
+    DESCRIPTION "Ceph in health_warn for more than 15m."
 ::= { prometheusAlertClusterHealthTraps 2 }
 
-prometheusAlertTrapMonLowMonitorQuorumCount NOTIFICATION-TYPE
+prometheusAlertMonTrapLowMonitorQuorumCount NOTIFICATION-TYPE
     OBJECTS     {
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
@@ -169,7 +167,7 @@ prometheusAlertOsdTrap10PercentOsdsDown NOTIFICATION-TYPE
                     prometheusAlertNotificationRawData
                 }
     STATUS      current
-    DESCRIPTION "More then 10% of OSDs are down."
+    DESCRIPTION "More than 10% of OSDs are down."
 ::= { prometheusAlertOsdTraps 1 }
 
 prometheusAlertOsdTrapOsdDown NOTIFICATION-TYPE
@@ -184,7 +182,7 @@ prometheusAlertOsdTrapOsdDown NOTIFICATION-TYPE
                     prometheusAlertNotificationRawData
                 }
     STATUS      current
-    DESCRIPTION "One or more OSDs down for more then 15 minutes."
+    DESCRIPTION "One or more OSDs down for more than 15 minutes."
 ::= { prometheusAlertOsdTraps 2 }
 
 prometheusAlertOsdTrapOsdsNearFull NOTIFICATION-TYPE
@@ -244,7 +242,7 @@ prometheusAlertPgsTrapPgsInactive NOTIFICATION-TYPE
                     prometheusAlertNotificationRawData
                 }
     STATUS      current
-    DESCRIPTION "One or more PGs are inactive for more then 5 minutes."
+    DESCRIPTION "One or more PGs are inactive for more than 5 minutes."
 ::= { prometheusAlertPgsTraps 1 }
 
 prometheusAlertPgsTrapPgsUnclean NOTIFICATION-TYPE
@@ -259,7 +257,7 @@ prometheusAlertPgsTrapPgsUnclean NOTIFICATION-TYPE
                     prometheusAlertNotificationRawData
                 }
     STATUS      current
-    DESCRIPTION "One or more PGs are not clean for more then 15 minutes."
+    DESCRIPTION "One or more PGs are not clean for more than 15 minutes."
 ::= { prometheusAlertPgsTraps 2 }
 
 prometheusAlertNodesTrapRootVolumeFull NOTIFICATION-TYPE
@@ -274,7 +272,7 @@ prometheusAlertNodesTrapRootVolumeFull NOTIFICATION-TYPE
                     prometheusAlertNotificationRawData
                 }
     STATUS      current
-    DESCRIPTION "Root volume (OSD and MON store) is dangerously full (< 10% free)."
+    DESCRIPTION "Root volume (OSD and MON store) is dangerously full (< 5% free)."
 ::= { prometheusAlertNodesTraps 1 }
 
 prometheusAlertNodesTrapNetworkPacketsDropped NOTIFICATION-TYPE
@@ -319,10 +317,10 @@ prometheusAlertNodesTrapStorageFilling NOTIFICATION-TYPE
                     prometheusAlertNotificationRawData
                 }
     STATUS      current
-    DESCRIPTION "A mount point will be full in less then 5 days assuming the average fillup rate of the past 48 hours."
+    DESCRIPTION "A mountpoint will be full in less then 5 days assuming the average fillup rate of the past 48 hours."
 ::= { prometheusAlertNodesTraps 4 }
 
-prometheusAlertPoolsTrapsPoolFull NOTIFICATION-TYPE
+prometheusAlertPoolsTrapPoolFull NOTIFICATION-TYPE
     OBJECTS     {
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
@@ -334,10 +332,10 @@ prometheusAlertPoolsTrapsPoolFull NOTIFICATION-TYPE
                     prometheusAlertNotificationRawData
                 }
     STATUS      current
-    DESCRIPTION "Pool at 90% capacity or over."
+    DESCRIPTION "A pool is at 90% capacity or over."
 ::= { prometheusAlertPoolsTraps 1 }
 
-prometheusAlertPoolsTrapsPoolFillingUp NOTIFICATION-TYPE
+prometheusAlertPoolsTrapPoolFillingUp NOTIFICATION-TYPE
     OBJECTS     {
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
