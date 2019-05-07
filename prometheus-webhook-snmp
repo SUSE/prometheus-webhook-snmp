@@ -102,8 +102,7 @@ def test(ctx):
                 'job': 'node-exporter',
                 'severity': 'info',
                 'foo': 'bar',
-                'xyz': 'abc',
-                'oid': ctx.config['trap_default_oid']
+                'xyz': 'abc'
             },
             'annotations': {
                 'description': 'localhost:9100 of job node-exporter load is over 0!',
