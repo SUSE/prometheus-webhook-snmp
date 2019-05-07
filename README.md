@@ -72,6 +72,15 @@ The host to use, defaults to ``localhost``.
 ### --port
 Port to listen for Prometheus Alertmanager notifications. Defaults to ``9099``.
 
+Example Prometheus Alertmanager configuration:
+
+```yaml
+receivers:
+  - name: 'prometheus-webhook-snmp'
+    webhook_configs:
+    - url: 'http://localhost:9099'
+```
+
 ### --metrics
 Provide Prometheus metrics from this receiver under the URL ``/metrics``.
 
