@@ -21,7 +21,7 @@ Summary:        Prometheus Alertmanager receiver for SNMP traps
 License:        GPL-3.0
 Group:          System/Management
 Url:            https://github.com/SUSE/prometheus-webhook-snmp
-Source0:        https://github.com/SUSE/prometheus-webhook-snmp/archive/master.zip
+Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  python3-setuptools
@@ -41,7 +41,7 @@ prometheus-webhook-snmp is a Prometheus Alertmanager receiver that
 translates incoming notifications into SNMP traps.
 
 %prep
-%setup -n %{name}-master
+%setup -n %{name}-%{version}
 
 %build
 
