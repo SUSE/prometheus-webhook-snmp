@@ -41,6 +41,7 @@ def parse_notification(config, notification):
             labels = alert['labels']
             annotations = alert['annotations']
 
+            alertname = labels.pop('alertname', None)
             summary = annotations.pop('summary', None)
             description = annotations.pop('description', None)
             timestamp = int(time.replace(tzinfo=datetime.timezone.utc).timestamp())
@@ -48,12 +49,13 @@ def parse_notification(config, notification):
             result.append({
                 'oid': labels.pop(config['alert_oid_label'],
                                   config['trap_default_oid']),
+                'alertname': alertname,
                 'status': alert['status'],
                 'severity': labels.pop('severity'),
-                'instance': labels.pop('instance', 'n/a'),
+                'instance': labels.pop('instance', None),
                 'job': labels.pop('job'),
                 'description': summary or description,
-                'tags': labels,
+                'labels': labels,
                 'timestamp': timestamp,
                 'rawdata': alert
             })
@@ -74,14 +76,15 @@ def send_snmp_trap(config, trap_data):
     :param trap_data:
     """
     oids = {
-        'status': '{}.1.1.1'.format(config['trap_oid_prefix']),
-        'severity': '{}.1.1.2'.format(config['trap_oid_prefix']),
-        'instance': '{}.1.1.3'.format(config['trap_oid_prefix']),
-        'job': '{}.1.1.4'.format(config['trap_oid_prefix']),
-        'description': '{}.1.1.5'.format(config['trap_oid_prefix']),
-        'tags': '{}.1.1.6'.format(config['trap_oid_prefix']),
-        'timestamp': '{}.1.1.7'.format(config['trap_oid_prefix']),
-        'rawdata': '{}.1.1.8'.format(config['trap_oid_prefix'])
+        'alertname': '{}.1.1.1'.format(config['trap_oid_prefix']),
+        'status': '{}.1.1.2'.format(config['trap_oid_prefix']),
+        'severity': '{}.1.1.3'.format(config['trap_oid_prefix']),
+        'instance': '{}.1.1.4'.format(config['trap_oid_prefix']),
+        'job': '{}.1.1.5'.format(config['trap_oid_prefix']),
+        'description': '{}.1.1.6'.format(config['trap_oid_prefix']),
+        'labels': '{}.1.1.7'.format(config['trap_oid_prefix']),
+        'timestamp': '{}.1.1.8'.format(config['trap_oid_prefix']),
+        'rawdata': '{}.1.1.9'.format(config['trap_oid_prefix'])
     }
 
     transport_addr = (config['snmp_host'], config['snmp_port'])
@@ -98,6 +101,8 @@ def send_snmp_trap(config, trap_data):
 
     var_binds = hlapi.NotificationType(hlapi.ObjectIdentity(trap_data['oid']))
     var_binds.addVarBinds(
+        hlapi.ObjectType(hlapi.ObjectIdentity(oids['alertname']),
+                         hlapi.OctetString(trap_data['alertname'])),
         hlapi.ObjectType(hlapi.ObjectIdentity(oids['status']),
                          hlapi.OctetString(trap_data['status'])),
         hlapi.ObjectType(hlapi.ObjectIdentity(oids['severity']),
@@ -108,8 +113,8 @@ def send_snmp_trap(config, trap_data):
                          hlapi.OctetString(trap_data['job'])),
         hlapi.ObjectType(hlapi.ObjectIdentity(oids['description']),
                          hlapi.OctetString(trap_data['description'])),
-        hlapi.ObjectType(hlapi.ObjectIdentity(oids['tags']),
-                         hlapi.OctetString(json.dumps(trap_data['tags']))),
+        hlapi.ObjectType(hlapi.ObjectIdentity(oids['labels']),
+                         hlapi.OctetString(json.dumps(trap_data['labels']))),
         hlapi.ObjectType(hlapi.ObjectIdentity(oids['timestamp']),
                          hlapi.TimeTicks(trap_data['timestamp'])),
         hlapi.ObjectType(hlapi.ObjectIdentity(oids['rawdata']),

@@ -109,11 +109,12 @@ The following objects are appended as variable binds to a SNMP trap.
 
 | OID | Type | Description |
 | :--- | :---: | :--- |
-| ``trap-oid-prefix``.1.1.1 | String | The status of the Prometheus alert. |
-| ``trap-oid-prefix``.1.1.2 | String | The severity of the Prometheus alert. |
-| ``trap-oid-prefix``.1.1.3 | String | Unique identifier for the Prometheus instance. |
-| ``trap-oid-prefix``.1.1.4 | String | The name of the Prometheus job. |
-| ``trap-oid-prefix``.1.1.5 | String | The Prometheus alert description field. |
-| ``trap-oid-prefix``.1.1.6 | String | Additional Prometheus alert labels as JSON string. |
-| ``trap-oid-prefix``.1.1.7 | Unix timestamp | The time when the Prometheus alert occurred. |
-| ``trap-oid-prefix``.1.1.8 | String | The raw Prometheus alert as JSON string. |
+| ``trap-oid-prefix``.1.1.1 | String | The name of the Prometheus alert. |
+| ``trap-oid-prefix``.1.1.2 | String | The status of the Prometheus alert. |
+| ``trap-oid-prefix``.1.1.3 | String | The severity of the Prometheus alert. |
+| ``trap-oid-prefix``.1.1.4 | String | Unique identifier for the Prometheus instance. |
+| ``trap-oid-prefix``.1.1.5 | String | The name of the Prometheus job. |
+| ``trap-oid-prefix``.1.1.6 | String | The Prometheus alert description field. |
+| ``trap-oid-prefix``.1.1.7 | String | Additional Prometheus alert labels as JSON string. |
+| ``trap-oid-prefix``.1.1.8 | Unix timestamp | The time when the Prometheus alert occurred. |
+| ``trap-oid-prefix``.1.1.9 | String | The raw Prometheus alert as JSON string. |
