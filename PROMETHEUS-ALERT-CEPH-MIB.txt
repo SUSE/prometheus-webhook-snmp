@@ -26,61 +26,68 @@ prometheusAlertTraps   OBJECT IDENTIFIER ::= { prometheusAlert 2 }
 -- Objects
 --
 
+prometheusAlertNotificationAlertName OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "The name of the Prometheus alert."
+::= { prometheusAlertObjects 1 }
+
 prometheusAlertNotificationStatus OBJECT-TYPE
     SYNTAX      DisplayString
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION "The status of the Prometheus alert."
-::= { prometheusAlertObjects 1 }
+::= { prometheusAlertObjects 2 }
 
 prometheusAlertNotificationSeverity OBJECT-TYPE
     SYNTAX      DisplayString
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION "The severity of the Prometheus alert."
-::= { prometheusAlertObjects 2 }
+::= { prometheusAlertObjects 3 }
 
 prometheusAlertNotificationInstance OBJECT-TYPE
     SYNTAX      DisplayString
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION "Unique identifier for the Prometheus instance."
-::= { prometheusAlertObjects 3 }
+::= { prometheusAlertObjects 4 }
 
 prometheusAlertNotificationJob OBJECT-TYPE
     SYNTAX      DisplayString
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION "The name of the Prometheus job."
-::= { prometheusAlertObjects 4 }
+::= { prometheusAlertObjects 5 }
 
 prometheusAlertNotificationDescription OBJECT-TYPE
     SYNTAX      DisplayString
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION "The Prometheus alert description field."
-::= { prometheusAlertObjects 5 }
+::= { prometheusAlertObjects 6 }
 
-prometheusAlertNotificationTags OBJECT-TYPE
+prometheusAlertNotificationLabels OBJECT-TYPE
     SYNTAX      DisplayString
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION "Additional Prometheus alert labels as JSON string."
-::= { prometheusAlertObjects 6 }
+::= { prometheusAlertObjects 7 }
 
 prometheusAlertNotificationTimestamp OBJECT-TYPE
     SYNTAX      TimeTicks
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION "The time when the Prometheus alert occurred."
-::= { prometheusAlertObjects 7 }
+::= { prometheusAlertObjects 8 }
 
 prometheusAlertNotificationRawData OBJECT-TYPE
     SYNTAX      TimeTicks
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION "The raw Prometheus alert as JSON string."
-::= { prometheusAlertObjects 8 }
+::= { prometheusAlertObjects 9 }
 
 --
 -- Traps
@@ -88,12 +95,13 @@ prometheusAlertNotificationRawData OBJECT-TYPE
 
 prometheusAlertTrapDefault NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -112,12 +120,13 @@ prometheusAlertPoolsTraps         OBJECT IDENTIFIER ::= { prometheusAlertTraps 9
 
 prometheusAlertClusterHealthTrapHealthError NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -127,12 +136,13 @@ prometheusAlertClusterHealthTrapHealthError NOTIFICATION-TYPE
 
 prometheusAlertClusterHealthTrapHealthWarn NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -142,12 +152,13 @@ prometheusAlertClusterHealthTrapHealthWarn NOTIFICATION-TYPE
 
 prometheusAlertMonTrapLowMonitorQuorumCount NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -157,12 +168,13 @@ prometheusAlertMonTrapLowMonitorQuorumCount NOTIFICATION-TYPE
 
 prometheusAlertOsdTrap10PercentOsdsDown NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -172,12 +184,13 @@ prometheusAlertOsdTrap10PercentOsdsDown NOTIFICATION-TYPE
 
 prometheusAlertOsdTrapOsdDown NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -187,12 +200,13 @@ prometheusAlertOsdTrapOsdDown NOTIFICATION-TYPE
 
 prometheusAlertOsdTrapOsdsNearFull NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -202,12 +216,13 @@ prometheusAlertOsdTrapOsdsNearFull NOTIFICATION-TYPE
 
 prometheusAlertOsdTrapFlapOsd NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -217,12 +232,13 @@ prometheusAlertOsdTrapFlapOsd NOTIFICATION-TYPE
 
 prometheusAlertOsdTrapHighPgCountDeviation NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -232,12 +248,13 @@ prometheusAlertOsdTrapHighPgCountDeviation NOTIFICATION-TYPE
 
 prometheusAlertPgsTrapPgsInactive NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -247,12 +264,13 @@ prometheusAlertPgsTrapPgsInactive NOTIFICATION-TYPE
 
 prometheusAlertPgsTrapPgsUnclean NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -262,12 +280,13 @@ prometheusAlertPgsTrapPgsUnclean NOTIFICATION-TYPE
 
 prometheusAlertNodesTrapRootVolumeFull NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -277,12 +296,13 @@ prometheusAlertNodesTrapRootVolumeFull NOTIFICATION-TYPE
 
 prometheusAlertNodesTrapNetworkPacketsDropped NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -292,12 +312,13 @@ prometheusAlertNodesTrapNetworkPacketsDropped NOTIFICATION-TYPE
 
 prometheusAlertNodesTrapNetworkPacketErrors NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -307,12 +328,13 @@ prometheusAlertNodesTrapNetworkPacketErrors NOTIFICATION-TYPE
 
 prometheusAlertNodesTrapStorageFilling NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -322,12 +344,13 @@ prometheusAlertNodesTrapStorageFilling NOTIFICATION-TYPE
 
 prometheusAlertPoolsTrapPoolFull NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
@@ -337,12 +360,13 @@ prometheusAlertPoolsTrapPoolFull NOTIFICATION-TYPE
 
 prometheusAlertPoolsTrapPoolFillingUp NOTIFICATION-TYPE
     OBJECTS     {
+                    prometheusAlertNotificationAlertName,
                     prometheusAlertNotificationStatus,
                     prometheusAlertNotificationSeverity,
                     prometheusAlertNotificationInstance,
                     prometheusAlertNotificationJob,
                     prometheusAlertNotificationDescription,
-                    prometheusAlertNotificationTags,
+                    prometheusAlertNotificationLabels,
                     prometheusAlertNotificationTimestamp,
                     prometheusAlertNotificationRawData
                 }
