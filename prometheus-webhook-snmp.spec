@@ -22,6 +22,10 @@ License:        GPL-3.0
 Group:          System/Management
 Url:            https://github.com/SUSE/prometheus-webhook-snmp
 Source0:        %{name}-%{version}.tar.gz
+%if 0%{?suse_version}
+Source98:       checkin.sh
+Source99:       README-checkin.txt
+%endif
 BuildArch:      noarch
 
 BuildRequires:  python3-setuptools
@@ -48,13 +52,25 @@ translates incoming notifications into SNMP traps.
 %install
 make install DESTDIR=%{buildroot} DOCDIR=%{_docdir} PYTHON3_SITELIB=%{python3_sitelib} UNITDIR=%{_unitdir}
 
+%pre
+%service_add_pre %{name}.service
+
+%post
+%service_add_post %{name}.service
+
+%preun
+%service_del_preun %{name}.service
+
+%postun
+%service_del_postun %{name}.service
+
 %files
+%doc README.md
+%license LICENSE
 %{_bindir}/%{name}
 %dir %{python3_sitelib}/prometheus_webhook_snmp
 %{python3_sitelib}/prometheus_webhook_snmp/__init__.py
 %{python3_sitelib}/prometheus_webhook_snmp/utils.py
-%dir %{_docdir}/%{name}
-%{_docdir}/%{name}/README.md
 %{_unitdir}/%{name}.service
 
 %changelog
