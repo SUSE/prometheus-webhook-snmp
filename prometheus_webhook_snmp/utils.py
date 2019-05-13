@@ -6,6 +6,7 @@ import logging
 import cherrypy
 import dateutil.parser
 import prometheus_client
+import yaml
 
 from pysnmp import hlapi
 
@@ -159,6 +160,72 @@ def run_http_server(ctx):
     cherrypy.quickstart(Root(ctx), config=get_http_server_config())
 
 
+class Config(dict):
+    def __init__(self):
+        super().__init__()
+        self.reset()
+
+    @staticmethod
+    def defaults():
+        """
+        Get the default configuration values.
+        :return: Returns a dictionary containing the default values.
+        :rtype: dict
+        """
+        return {
+            'debug': False,
+            'snmp_host': 'localhost',
+            'snmp_port': 162,
+            'snmp_community': 'public',
+            'snmp_retries': 5,
+            'snmp_timeout': 1,
+            'alert_oid_label': 'oid',
+            'trap_oid_prefix': '1.3.6.1.4.1.50495.15',
+            'trap_default_oid': '1.3.6.1.4.1.50495.15.1.2.1',
+            'host': '0.0.0.0',
+            'port': 9099,
+            'metrics': False
+        }
+
+    def reset(self, name=None):
+        """
+        Reset to default values. If a name is specified, only the named
+        configuration setting is reset to default.
+        :param name: The name of the configuration setting. Defaults to 'None'.
+        :type name: str
+        """
+        if name is None:
+            self.clear()
+            self.update(Config.defaults())
+        else:
+            self[name] = Config.defaults()[name]
+
+    def load(self, prog_name):
+        """
+        Load a configuration file from disk.
+        :param prog_name: The name of the program.
+        :type prog_name: str
+        """
+        file_name = '/etc/{}.conf'.format(prog_name)
+        try:
+            with open(file_name, 'r') as stream:
+                config = yaml.safe_load(stream)
+                self.update(config)
+        except (IOError, FileNotFoundError):
+            pass
+
+    def __setitem__(self, key, value):
+        """
+        Set self[key] to value. Ignore 'None' values.
+        :param key: The name of the key.
+        :type key: str
+        :param value: The value of the key.
+        :type value: bool|int|str
+        """
+        if value is not None:
+            super().__setitem__(key, value)
+
+
 class Telemetry:
     def __init__(self):
         self.metrics = {
@@ -183,14 +250,7 @@ class Telemetry:
 
 class Context:
     def __init__(self):
-        self.config = {
-            key: None
-            for key in [
-                'host', 'port', 'metrics', 'snmp_host', 'snmp_port',
-                'snmp_community', 'snmp_retries', 'snmp_timeout',
-                'alert_oid_label', 'trap_default_oid', 'trap_oid_prefix'
-            ]
-        }
+        self.config = Config()
         self.telemetry = Telemetry()
 
 

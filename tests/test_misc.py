@@ -1,6 +1,9 @@
 import unittest
+import mock
 
-from prometheus_webhook_snmp.utils import parse_notification
+from pyfakefs import fake_filesystem
+
+from prometheus_webhook_snmp.utils import parse_notification, Config
 
 NOTIFICATION_FIRING = {
     'receiver': 'test-01',
@@ -110,3 +113,30 @@ class FunctionTestCase(unittest.TestCase):
         self.assertEqual(trap_data['labels'], {'foo': 'abc', 'bar': 123})
         self.assertEqual(trap_data['timestamp'], 1554110387)
         self.assertIsInstance(trap_data['rawdata'], dict)
+
+
+class ConfigTestCase(unittest.TestCase):
+    fs = fake_filesystem.FakeFilesystem()
+    f_open = fake_filesystem.FakeFileOpen(fs)
+
+    def test_defaults(self):
+        self.assertIsInstance(Config.defaults(), dict)
+
+    def test_reset(self):
+        config = Config()
+        config['snmp_community'] = 'private'
+        config.reset('snmp_community')
+        self.assertEqual(config['snmp_community'], Config.defaults()['snmp_community'])
+
+    def test_reset_all(self):
+        config = Config()
+        config['foo'] = 'bar'
+        config.reset()
+        self.assertDictEqual(config, Config.defaults())
+
+    @mock.patch('builtins.open', new=f_open)
+    def test_load(self):
+        self.fs.create_file('/etc/abc.conf', contents='''foo: bar\n''')
+        config = Config()
+        config.load('abc')
+        self.assertEqual(config['foo'], 'bar')
