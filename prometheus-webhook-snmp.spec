@@ -36,7 +36,7 @@ Requires:       python3-cherrypy
 Requires:       python3-yaml
 %endif
 Requires:       python3-dateutil
-Requires:       python3-pysnmp >= 4.3.2
+Requires:       python3-pysnmp >= 4.4.1
 
 %description
 prometheus-webhook-snmp is a Prometheus Alertmanager receiver that
