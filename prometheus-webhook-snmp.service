@@ -3,7 +3,8 @@ Description=Prometheus Alertmanager receiver for SNMP traps
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/prometheus-webhook-snmp run
+EnvironmentFile=-/etc/default/prometheus-webhook-snmp
+ExecStart=/usr/bin/prometheus-webhook-snmp $PROMETHEUS_WEBHOOK_SNMP_OPTIONS run
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 

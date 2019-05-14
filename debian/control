@@ -12,7 +12,8 @@ Depends: ${misc:Depends},
          python3-click,
          python3-cherrypy3,
          python3-dateutil,
-         python3-pysnmp4
+         python3-pysnmp4,
+         python3-yaml
 Priority: optional
 Description: Prometheus Alertmanager receiver for SNMP traps
  prometheus-webhook-snmp is a Prometheus Alertmanager receiver that

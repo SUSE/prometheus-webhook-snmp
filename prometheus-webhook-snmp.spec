@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 
 Name:           prometheus-webhook-snmp
-Version:        1.0
+Version:        1.1
 Release:        0
 Summary:        Prometheus Alertmanager receiver for SNMP traps
 License:        GPL-3.0
@@ -34,11 +34,13 @@ Requires:       python3-prometheus-client
 Requires:       python3-click
 %if 0%{?suse_version}
 Requires:       python3-CherryPy
+Requires:       python3-PyYAML
 %else
 Requires:       python3-cherrypy
+Requires:       python3-yaml
 %endif
 Requires:       python3-dateutil
-Requires:       python3-pysnmp
+Requires:       python3-pysnmp >= 4.3.2
 
 %description
 prometheus-webhook-snmp is a Prometheus Alertmanager receiver that

@@ -21,6 +21,7 @@ If you want to send a test SNMP trap, then simply execute the following command.
     $ ./prometheus-webhook-snmp test
 
 # Command line parameters
+Command line parameters have precedence over global configuration settings.
 
 ## Global
 
@@ -92,6 +93,19 @@ scrape_configs:
     scrape_interval: 30s
     static_configs:
       - targets: ['localhost:9099']
+```
+
+# Global configuration file
+The Prometheus Alertmanager receiver can be configured via configuration file, too. The file ``/etc/prometheus-webhook-snmp.conf`` is written in YAML format. Parameters in this file have precedence over default configuration settings. Please replace hyphens in parameter names with underscores.
+
+Example configuration:
+
+```yaml
+debug: True
+snmp_retries: 1
+snmp_community: private
+host: promalertmgr.foo.com
+port: 9101
 ```
 
 # SNMP schema

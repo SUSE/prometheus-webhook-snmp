@@ -8,7 +8,8 @@ import click
 from prometheus_webhook_snmp import utils
 
 
-__version__ = "1.0"
+__version__ = "1.1"
+
 
 pass_context = click.make_pass_decorator(utils.Context, ensure=True)
 
@@ -19,42 +20,27 @@ pass_context = click.make_pass_decorator(utils.Context, ensure=True)
               is_flag=True,
               help='Enable debug output.')
 @click.option('--snmp-host',
-              default='localhost',
-              show_default=True,
               help='The host (IP or FQDN) of the SNMP trap receiver.')
 @click.option('--snmp-port',
-              default=162,
-              show_default=True,
               help='The port of the SNMP trap receiver.')
 @click.option('--snmp-community',
-              default='public',
-              show_default=True,
               help='The SNMP community string.')
 @click.option('--snmp-retries',
-              default=5,
-              show_default=True,
               help='Maximum number of request retries.')
 @click.option('--snmp-timeout',
-              default=1,
-              show_default=True,
               help='Response timeout in seconds.')
 @click.option('--alert-oid-label',
-              default='oid',
-              show_default=True,
               help='The label where to find the OID.')
 @click.option('--trap-oid-prefix',
-              default='1.3.6.1.4.1.50495.15',
-              show_default=True,
               help='The OID prefix for trap variable bindings.')
 @click.option('--trap-default-oid',
-              default='1.3.6.1.4.1.50495.15.1.2.1',
-              show_default=True,
               help='The trap OID if none is found in the Prometheus alert labels.')
 @click.version_option(__version__, message="%(version)s")
 @pass_context
 def cli(ctx, debug, snmp_host, snmp_port, snmp_community, snmp_retries,
         snmp_timeout, alert_oid_label, trap_oid_prefix, trap_default_oid):
-    ctx.config['debug'] = debug
+    ctx.config.load(click.get_current_context().info_name)
+    ctx.config['debug'] = True if debug else None
     ctx.config['snmp_host'] = snmp_host
     ctx.config['snmp_port'] = snmp_port
     ctx.config['snmp_community'] = snmp_community
@@ -72,12 +58,8 @@ def cli(ctx, debug, snmp_host, snmp_port, snmp_community, snmp_retries,
 
 @cli.command(name='run', help='Start the HTTP server.')
 @click.option('--host',
-              default='0.0.0.0',
-              show_default=True,
               help='Host to use.')
 @click.option('--port',
-              default=9099,
-              show_default=True,
               help='Port to listen for Prometheus Alertmanager notifications.')
 @click.option('--metrics',
               is_flag=True,
@@ -86,7 +68,7 @@ def cli(ctx, debug, snmp_host, snmp_port, snmp_community, snmp_retries,
 def run(ctx, host, port, metrics):
     ctx.config['host'] = host
     ctx.config['port'] = port
-    ctx.config['metrics'] = metrics
+    ctx.config['metrics'] = True if metrics else None
     utils.run_http_server(ctx)
     sys.exit(0)
 
