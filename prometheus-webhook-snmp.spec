@@ -22,10 +22,6 @@ License:        GPL-3.0
 Group:          System/Management
 Url:            https://github.com/SUSE/prometheus-webhook-snmp
 Source0:        %{name}-%{version}.tar.gz
-%if 0%{?suse_version}
-Source98:       checkin.sh
-Source99:       README-checkin.txt
-%endif
 BuildArch:      noarch
 
 BuildRequires:  python3-setuptools
