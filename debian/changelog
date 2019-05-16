@@ -1,6 +1,15 @@
+prometheus-webhook-snmp (1.2-1) stable; urgency=low
+
+  * Show used configuration settings in debug mode.
+
+ -- Volker Theile <vtheile@suse.com>  Thu, 16 May 2019 14:04:41 +0200
+
 prometheus-webhook-snmp (1.1-1) stable; urgency=low
 
-  * Add support for global configuration file.
+  * Add support for global configuration file /etc/prometheus-webhook-snmp.conf
+  * Add ability to configure systemd service via /etc/default/prometheus-webhook-snmp
+  * Added python3-PyYAML as new dependency
+  * python3-pysnmp needs to be at least 4.4.1
 
  -- Volker Theile <vtheile@suse.com>  Mon, 13 May 2019 16:01:19 +0200
 

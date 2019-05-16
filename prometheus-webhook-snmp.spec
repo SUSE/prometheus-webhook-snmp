@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 
 Name:           prometheus-webhook-snmp
-Version:        1.1
+Version:        1.2
 Release:        0
 Summary:        Prometheus Alertmanager receiver for SNMP traps
 License:        GPL-3.0

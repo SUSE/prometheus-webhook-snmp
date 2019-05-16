@@ -187,6 +187,9 @@ class Config(dict):
             'metrics': False
         }
 
+    def dump(self):
+        logger.debug('Configuration settings: %s', json.dumps(self))
+
     def reset(self, name=None):
         """
         Reset to default values. If a name is specified, only the named
