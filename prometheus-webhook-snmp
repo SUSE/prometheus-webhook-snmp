@@ -8,7 +8,7 @@ import click
 from prometheus_webhook_snmp import utils
 
 
-__version__ = "1.1"
+__version__ = "1.2"
 
 
 pass_context = click.make_pass_decorator(utils.Context, ensure=True)
@@ -69,6 +69,7 @@ def run(ctx, host, port, metrics):
     ctx.config['host'] = host
     ctx.config['port'] = port
     ctx.config['metrics'] = True if metrics else None
+    ctx.config.dump()
     utils.run_http_server(ctx)
     sys.exit(0)
 
@@ -76,6 +77,7 @@ def run(ctx, host, port, metrics):
 @cli.command(name='test', help='Trigger a SNMP trap.')
 @pass_context
 def test(ctx):
+    ctx.config.dump()
     trap_data = utils.parse_notification(ctx.config, {
         'receiver': 'bar',
         'status': 'firing',
