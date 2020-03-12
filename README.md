@@ -1,4 +1,4 @@
-prometheus-webhook-snmp is a Prometheus Alertmanager receiver that translates incoming notifications into SNMP traps.
+prometheus-webhook-snmp is a Prometheus Alertmanager receiver that translates incoming notifications into SNMP v2c traps.
 
 # Features
 
@@ -26,7 +26,7 @@ Command line parameters have precedence over global configuration settings.
 ## Global
 
 ### --snmp-host
-The host (IP or FQDN) of the SNMP trap receiver. Defaults to ``localhost``.
+The host (IPv4, IPv6 or FQDN) of the SNMP trap receiver. Defaults to ``localhost``.
 
 ### --snmp-port
 The port of the SNMP trap receiver. Defaults to ``162``.
