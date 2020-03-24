@@ -96,7 +96,13 @@ scrape_configs:
 ```
 
 # Global configuration file
-The Prometheus Alertmanager receiver can be configured via configuration file, too. The file ``/etc/prometheus-webhook-snmp.conf`` is written in YAML format. Parameters in this file have precedence over default configuration settings. Please replace hyphens in parameter names with underscores.
+The Prometheus Alertmanager receiver can be configured via configuration file, too.
+Command line arguments have precedence over the settings in the configuration file.
+The configuration file is written in YAML format. The file will be loaded in the
+following order and precedence from ``/etc/prometheus-webhook-snmp.conf`` and the 
+directory in which the prometheus-webhook-snmp command is located.
+Parameters in these files have precedence over default configuration settings.
+Please replace hyphens in parameter names with underscores.
 
 Example configuration:
 

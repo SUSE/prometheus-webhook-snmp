@@ -2,6 +2,8 @@ import datetime
 import ipaddress
 import json
 import logging
+import os
+import sys
 
 import cherrypy
 import dateutil.parser
@@ -209,13 +211,21 @@ class Config(dict):
         :param prog_name: The name of the program.
         :type prog_name: str
         """
-        file_name = '/etc/{}.conf'.format(prog_name)
-        try:
-            with open(file_name, 'r') as stream:
-                config = yaml.safe_load(stream)
-                self.update(config)
-        except (IOError, FileNotFoundError):
-            pass
+        file_name = '{}.conf'.format(prog_name)
+        path_names = [
+            os.path.join('/etc', file_name),
+            os.path.join(sys.path[0], file_name)
+        ]
+        for path_name in path_names:
+            try:
+                with open(path_name, 'r') as stream:
+                    config = yaml.safe_load(stream)
+                    # Automatically convert hyphens to underscores.
+                    for key in list(config.keys()):
+                        config[key.replace('-', '_')] = config.pop(key)
+                    self.update(config)
+            except (IOError, FileNotFoundError):
+                pass
 
     def __setitem__(self, key, value):
         """

@@ -1,6 +1,9 @@
 v1.2
 
   * Show used configuration settings in debug mode.
+  * Load configuration file from the directory in which the prometheus-webhook-snmp
+    command is located.
+  * Automatically convert hyphens to underscores in configuration file parameters.
 
 v1.1
 
