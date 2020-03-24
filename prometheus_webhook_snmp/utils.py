@@ -71,7 +71,7 @@ def parse_notification(config, notification):
 
 def send_snmp_trap(config, trap_data):
     """
-    Send a SNMP trap.
+    Send a SNMP v2c trap.
     :param config: The configuration data.
     :type config: dict
     :param trap_data:

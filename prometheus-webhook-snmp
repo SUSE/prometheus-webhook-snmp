@@ -15,12 +15,12 @@ pass_context = click.make_pass_decorator(utils.Context, ensure=True)
 
 
 @click.group(help='Prometheus Alertmanager receiver that translates '
-                  'notifications into SNMP traps.')
+                  'notifications into SNMP v2c traps.')
 @click.option('--debug',
               is_flag=True,
               help='Enable debug output.')
 @click.option('--snmp-host',
-              help='The host (IP or FQDN) of the SNMP trap receiver.')
+              help='The host (IPv4, IPv6 or FQDN) of the SNMP trap receiver.')
 @click.option('--snmp-port',
               help='The port of the SNMP trap receiver.')
 @click.option('--snmp-community',
