@@ -15,6 +15,35 @@ logger = logging.getLogger(__name__)
 
 def parse_notification(config, notification):
     """
+    Parse the Alertmanager notification.
+
+    Example:
+    {
+      "receiver": "storage",
+      "status": "firing",
+      "alerts": [
+        {
+          "status": "firing",
+          "labels": {
+            "alertname": "OSD down",
+            "monitor": "ses",
+            "oid": "1.3.6.1.4.1.50495.15.1.2.4.2",
+            "severity": "warning",
+            "type": "ceph_default"
+          },
+          "annotations": {
+            "description": "One or more OSDs down for more than 15 minutes."
+          },
+          "startsAt": "2020-03-24T10:25:29.689078708-04:00",
+          "endsAt": "0001-01-01T00:00:00Z",
+          "generatorURL": "http://xxxx:9090/graph?g0.expr=..."
+        }
+      ],
+      ...
+    }
+
+    See https://prometheus.io/docs/alerting/configuration/#webhook_config
+
     :param config: The configuration data.
     :type config: dict
     :param notification:
@@ -52,9 +81,10 @@ def parse_notification(config, notification):
                                   config['trap_default_oid']),
                 'alertname': alertname,
                 'status': alert['status'],
-                'severity': labels.pop('severity'),
+                'severity': labels.pop('severity',
+                                       config['trap_default_severity']),
                 'instance': labels.pop('instance', None),
-                'job': labels.pop('job'),
+                'job': labels.pop('job', None),
                 'description': summary or description,
                 'labels': labels,
                 'timestamp': timestamp,
@@ -182,6 +212,7 @@ class Config(dict):
             'alert_oid_label': 'oid',
             'trap_oid_prefix': '1.3.6.1.4.1.50495.15',
             'trap_default_oid': '1.3.6.1.4.1.50495.15.1.2.1',
+            'trap_default_severity': '',
             'host': '0.0.0.0',
             'port': 9099,
             'metrics': False

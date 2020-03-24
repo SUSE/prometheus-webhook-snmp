@@ -65,6 +65,9 @@ The OID prefix for trap variable bindings. Defaults to ``1.3.6.1.4.1.50495.15``.
 ### --trap-default-oid
 The trap OID if none is found in the Prometheus alert labels. Defaults to ``1.3.6.1.4.1.50495.15.1.2.1``.
 
+### --trap-default-severity
+The trap severity if none is found in the Prometheus alert labels. Defaults to an empty string.
+
 ## Command ``run``
 
 ### --host
