@@ -1,3 +1,8 @@
+v1.3
+
+  * Add 'trap-default-severity' configuration option.
+  * Harden the notification parser.
+
 v1.2
 
   * Show used configuration settings in debug mode.
