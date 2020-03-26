@@ -79,7 +79,8 @@ class FunctionTestCase(unittest.TestCase):
     def test_parse_notification(self):
         trap_data = parse_notification({
             'alert_oid_label': 'oid',
-            'trap_default_oid': '1.2.3.4'
+            'trap_default_oid': '1.2.3.4',
+            'trap_default_severity': ''
         }, NOTIFICATION_FIRING)
         self.assertIsInstance(trap_data, list)
         trap_data = trap_data[0]
@@ -98,7 +99,8 @@ class FunctionTestCase(unittest.TestCase):
     def test_parse_notification_no_oid(self):
         trap_data = parse_notification({
             'alert_oid_label': 'oid',
-            'trap_default_oid': '1.2.3.4'
+            'trap_default_oid': '1.2.3.4',
+            'trap_default_severity': ''
         }, NOTIFICATION_RESOLVED)
         self.assertIsInstance(trap_data, list)
         trap_data = trap_data[0]
