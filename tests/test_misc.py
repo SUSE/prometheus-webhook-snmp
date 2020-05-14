@@ -3,7 +3,8 @@ import mock
 
 from pyfakefs import fake_filesystem
 
-from prometheus_webhook_snmp.utils import parse_notification, Config
+from prometheus_webhook_snmp.utils import parse_notification, Config, \
+    send_snmp_trap
 
 NOTIFICATION_FIRING = {
     'receiver': 'test-01',
@@ -115,6 +116,22 @@ class FunctionTestCase(unittest.TestCase):
         self.assertEqual(trap_data['labels'], {'foo': 'abc', 'bar': 123})
         self.assertEqual(trap_data['timestamp'], 1554110387)
         self.assertIsInstance(trap_data['rawdata'], dict)
+
+    def test_send_snmp_trap(self):
+        config = Config()
+        self.assertIsInstance(config['trap_default_severity'], str)
+        send_snmp_trap(config, {
+            'oid': '1.3.6.1.4.1.50495.15.1.2.1',
+            'alertname': None,
+            'status': 'resolved',
+            'severity': config['trap_default_severity'],
+            'instance': None,
+            'job': None,
+            'description': None,
+            'labels': {},
+            'timestamp': 1554110387,
+            'rawdata': {}
+        })
 
 
 class ConfigTestCase(unittest.TestCase):
