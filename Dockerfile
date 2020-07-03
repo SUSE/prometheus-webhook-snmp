@@ -4,7 +4,7 @@ MAINTAINER mrunge
 USER root
 
 RUN dnf -y update
-RUN dnf -y install python3-cherrypy python3-PyYAML python3-pysnmp python3-dateutil python3-click git
+RUN dnf -y install python3-cherrypy python3-PyYAML python3-pysnmp python3-dateutil python3-click git && dnf clean all
 
 RUN git clone https://github.com/SUSE/prometheus-webhook-snmp
 RUN export PYTHON3_SITELIB=$(rpm -E '%{python3_sitelib}')
