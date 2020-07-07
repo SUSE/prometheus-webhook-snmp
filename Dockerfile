@@ -10,7 +10,7 @@ RUN dnf -y install python3-cherrypy python3-PyYAML python3-pysnmp \
 
 RUN git clone https://github.com/SUSE/prometheus-webhook-snmp
 RUN mv prometheus-webhook-snmp/prometheus-webhook-snmp /usr/bin
-RUN mv prometheus-webhook-snmp/prometheus_webhook_snmp /usr/lib/python3.8/site-packages
+RUN mv prometheus-webhook-snmp/prometheus_webhook_snmp /usr/lib/python3.7/site-packages
 RUN rm -rf prometheus-webhook-snmp
 
 ENV SNMP_COMMUNITY="public"
