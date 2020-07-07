@@ -4,12 +4,13 @@ MAINTAINER mrunge
 USER root
 
 RUN dnf -y update
-RUN dnf -y install python3-cherrypy python3-PyYAML python3-pysnmp python3-dateutil python3-click git && dnf clean all
+RUN dnf -y install python3-cherrypy python3-PyYAML python3-pysnmp \
+                   python3-dateutil python3-click git \
+                   python3-prometheus_client && dnf clean all
 
 RUN git clone https://github.com/SUSE/prometheus-webhook-snmp
-RUN export PYTHON3_SITELIB=$(rpm -E '%{python3_sitelib}')
 RUN mv prometheus-webhook-snmp/prometheus-webhook-snmp /usr/bin
-RUN mv prometheus-webhook-snmp/prometheus_webhook_snmp $PYTHON3_SITELIB/
+RUN mv prometheus-webhook-snmp/prometheus_webhook_snmp /usr/lib/python3.8/site-packages
 RUN rm -rf prometheus-webhook-snmp
 
 ENV SNMP_COMMUNITY="public"
