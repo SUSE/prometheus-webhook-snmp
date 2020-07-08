@@ -23,7 +23,7 @@ ENV ALERT_OID_LABEL="oid"
 EXPOSE 9099
 
 COPY prometheus-webhook-snmp /
-CMD exec /usr/bin/prometheus-webhook-snmp --snmp-port=$SNMP_PORT \
+CMD exec /usr/bin/prometheus-webhook-snmp --debug --snmp-port=$SNMP_PORT \
   --snmp-host=$SNMP_HOST --snmp-community=$SNMP_COMMUNITY \
   --snmp-timeout=$SNMP_TIMEOUT --snmp-retries=$SNMP_RETRIES \
   --alert-oid-label=$ALERT_OID_LABEL run
