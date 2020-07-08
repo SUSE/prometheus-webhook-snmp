@@ -6,7 +6,7 @@ USER root
 RUN dnf -y update
 RUN dnf -y install python3-cherrypy python3-PyYAML python3-pysnmp \
                    python3-dateutil python3-click git \
-                   python3-prometheus_client && dnf clean all
+                   python3-prometheus_client procps-ng telnet lsof && dnf clean all
 
 RUN git clone https://github.com/SUSE/prometheus-webhook-snmp
 RUN mv prometheus-webhook-snmp/prometheus-webhook-snmp /usr/bin
