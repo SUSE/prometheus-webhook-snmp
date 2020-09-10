@@ -1,4 +1,4 @@
-FROM opensuse/tumbleweed:latest
+FROM registry.opensuse.org/opensuse/tumbleweed:latest
 MAINTAINER Volker Theile <vtheile@suse.com>
 
 RUN zypper ref && \
