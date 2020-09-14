@@ -12,19 +12,24 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# bugs, issues, pull requests, please report via github.
+# this software is a fork of github.com/SUSE/prometheus-webhook-snmp
 
 Name:           prometheus-webhook-snmp
 Version:        1.4
-Release:        0
+Release:        1
 Summary:        Prometheus Alertmanager receiver for SNMP traps
 License:        GPL-3.0
-Group:          System/Management
-Url:            https://github.com/SUSE/prometheus-webhook-snmp
-Source0:        %{name}-%{version}.tar.gz
+Url:            https://github.com/infrawatch/prometheus-webhook-snmp
+Source0:        https://github.com/infrawatch/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  python3-setuptools
+
+%if 0%{?fedora}
+BuildRequires:  python3-devel
+BuildRequires:  systemd-rpm-macros
+%endif
 
 Requires:       python3-prometheus-client
 Requires:       python3-click
@@ -48,27 +53,27 @@ translates incoming notifications into SNMP traps.
 %build
 
 %install
-make install DESTDIR=%{buildroot} DOCDIR=%{_docdir} PYTHON3_SITELIB=%{python3_sitelib} UNITDIR=%{_unitdir}
+make install DESTDIR=%{buildroot} PYTHON3_SITELIB=%{python3_sitelib} UNITDIR=%{_unitdir}
 
 %pre
-%service_add_pre %{name}.service
+systemd_pre %{name}.service
 
 %post
-%service_add_post %{name}.service
+%systemd_post %{name}.service
 
 %preun
-%service_del_preun %{name}.service
+%systemd_preun %{name}.service
 
 %postun
-%service_del_postun %{name}.service
+%systemd_postun %{name}.service
 
 %files
 %doc README.md
 %license LICENSE
 %{_bindir}/%{name}
-%dir %{python3_sitelib}/prometheus_webhook_snmp
-%{python3_sitelib}/prometheus_webhook_snmp/__init__.py
-%{python3_sitelib}/prometheus_webhook_snmp/utils.py
+%{python3_sitelib}/prometheus_webhook_snmp
 %{_unitdir}/%{name}.service
 
 %changelog
+* Mon Sep 14 2020 Matthias Runge <mrunge@redhat.com> - 1.5-1
+- initial RPM packaging for Fedora/RHEL/CentOS
