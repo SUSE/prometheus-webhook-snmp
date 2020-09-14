@@ -16,7 +16,7 @@
 # this software is a fork of github.com/SUSE/prometheus-webhook-snmp
 
 Name:           prometheus-webhook-snmp
-Version:        1.4
+Version:        1.5
 Release:        1
 Summary:        Prometheus Alertmanager receiver for SNMP traps
 License:        GPL-3.0
