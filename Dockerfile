@@ -5,6 +5,6 @@ RUN zypper ref && \
     zypper --non-interactive install prometheus-webhook-snmp && \
     zypper clean -a
 
-ENV ARGS=""
+ENV ARGS="--debug run"
 
-CMD exec /usr/bin/prometheus-webhook-snmp --debug run $ARGS
+CMD exec /usr/bin/prometheus-webhook-snmp $ARGS
