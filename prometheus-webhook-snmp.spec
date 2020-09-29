@@ -56,7 +56,7 @@ translates incoming notifications into SNMP traps.
 make install DESTDIR=%{buildroot} PYTHON3_SITELIB=%{python3_sitelib} UNITDIR=%{_unitdir}
 
 %pre
-systemd_pre %{name}.service
+%systemd_pre %{name}.service
 
 %post
 %systemd_post %{name}.service
