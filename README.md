@@ -102,7 +102,7 @@ scrape_configs:
 The Prometheus Alertmanager receiver can be configured via configuration file, too.
 Command line arguments have precedence over the settings in the configuration file.
 The configuration file is written in YAML format. The file will be loaded in the
-following order and precedence from ``/etc/prometheus-webhook-snmp.conf`` and the 
+following order and precedence from ``/etc/prometheus-webhook-snmp.conf`` and the
 directory in which the prometheus-webhook-snmp command is located.
 Parameters in these files have precedence over default configuration settings.
 Please replace hyphens in parameter names with underscores.
@@ -160,10 +160,9 @@ when running the container because the port is not exposed automatically
 because it is configurable. The default port is `9099`.
 
 Alternatively simply connect the container to the host network by using
-the command line argument `--network=host`.
-
-Additionally the SNMP host needs to be configured. Use the container's
-network gateway to be able to receive SNMP traps outside the container.
+the command line argument `--network=host`. Additionally the SNMP host
+needs to be configured. Use the container's network gateway to be able
+to receive SNMP traps outside the container.
 
 ## Run the container
 
