@@ -17,9 +17,9 @@
 
 Name:           prometheus-webhook-snmp
 Version:        1.5
-Release:        1
+Release:        1%{?dist}
 Summary:        Prometheus Alertmanager receiver for SNMP traps
-License:        GPL-3.0
+License:        GPLv3
 Url:            https://github.com/infrawatch/prometheus-webhook-snmp
 Source0:        https://github.com/infrawatch/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 BuildArch:      noarch
@@ -31,7 +31,7 @@ BuildRequires:  python3-devel
 BuildRequires:  systemd-rpm-macros
 %endif
 
-Requires:       python3-prometheus-client
+Requires:       python3-prometheus_client
 Requires:       python3-click
 %if 0%{?suse_version}
 Requires:       python3-CherryPy
@@ -42,13 +42,14 @@ Requires:       python3-yaml
 %endif
 Requires:       python3-dateutil
 Requires:       python3-pysnmp >= 4.4.1
+Requires:       systemd
 
 %description
 prometheus-webhook-snmp is a Prometheus Alertmanager receiver that
 translates incoming notifications into SNMP traps.
 
 %prep
-%setup -n %{name}-%{version}
+%setup -q -n %{name}-%{version}
 
 %build
 
@@ -76,4 +77,4 @@ make install DESTDIR=%{buildroot} PYTHON3_SITELIB=%{python3_sitelib} UNITDIR=%{_
 
 %changelog
 * Mon Sep 14 2020 Matthias Runge <mrunge@redhat.com> - 1.5-1
-- initial RPM packaging for Fedora/RHEL/CentOS
+- initial RPM packaging for Fedora/RHEL/CentOS (rhbz#1878733)
