@@ -28,8 +28,8 @@ BuildRequires:  python3-setuptools
 
 %if 0%{?fedora}
 BuildRequires:  python3-devel
-BuildRequires:  systemd-rpm-macros
 %endif
+BuildRequires:  systemd-rpm-macros
 
 Requires:       python3-prometheus_client
 Requires:       python3-click
@@ -56,6 +56,7 @@ translates incoming notifications into SNMP traps.
 %install
 make install DESTDIR=%{buildroot} PYTHON3_SITELIB=%{python3_sitelib} UNITDIR=%{_unitdir}
 
+%if 0%{?fedora}
 %pre
 %systemd_pre %{name}.service
 
@@ -67,6 +68,8 @@ make install DESTDIR=%{buildroot} PYTHON3_SITELIB=%{python3_sitelib} UNITDIR=%{_
 
 %postun
 %systemd_postun %{name}.service
+
+%endif
 
 %files
 %doc README.md
