@@ -1,0 +1,30 @@
+name: CI
+on: push
+
+jobs:
+  super-linting:
+    name: Super Linting
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v3
+        env:
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_DOCKERFILE: true
+          VALIDATE_DOCKERFILE_HADOLINT: true
+
+  build-check:
+    name: Build check
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Verify image builds
+        run: docker build --tag infrawatch/prometheus-webhook-snmp:latest --file Dockerfile .
+
