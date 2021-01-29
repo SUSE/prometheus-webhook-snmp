@@ -102,7 +102,7 @@ scrape_configs:
 The Prometheus Alertmanager receiver can be configured via configuration file, too.
 Command line arguments have precedence over the settings in the configuration file.
 The configuration file is written in YAML format. The file will be loaded in the
-following order and precedence from ``/etc/prometheus-webhook-snmp.conf`` and the 
+following order and precedence from ``/etc/prometheus-webhook-snmp.conf`` and the
 directory in which the prometheus-webhook-snmp command is located.
 Parameters in these files have precedence over default configuration settings.
 Please replace hyphens in parameter names with underscores.
@@ -141,3 +141,46 @@ The following objects are appended as variable binds to a SNMP trap.
 | ``trap-oid-prefix``.1.1.7 | String | Additional Prometheus alert labels as JSON string. |
 | ``trap-oid-prefix``.1.1.8 | Unix timestamp | The time when the Prometheus alert occurred. |
 | ``trap-oid-prefix``.1.1.9 | String | The raw Prometheus alert as JSON string. |
+
+
+# Docker
+
+## Pull the container
+
+To get the container image, execute the following command:
+
+    $ docker pull registry.opensuse.org/opensuse/prometheus-webhook-snmp:latest
+    $ docker pull registry.opensuse.org/opensuse/prometheus-webhook-snmp:1.4
+
+## Networking
+
+You need to publish the port the Prometheus receiver is listening on by
+using the command line argument `--publish <HOST_PORT>:<CONTAINER_PORT>`
+when running the container because the port is not exposed automatically
+because it is configurable. The default port is `9099`.
+
+Alternatively simply connect the container to the host network by using
+the command line argument `--network=host`. Additionally the SNMP host
+needs to be configured. Use the container's network gateway to be able
+to receive SNMP traps outside the container.
+
+## Run the container
+
+There are two options for configuring the container:
+
+1. Environment variables
+2. Configuration file
+
+### Environment variables
+
+Use `ARGS` to set [global options](#global) and `RUN_ARGS` for the
+[run command options](#command-run). The environment variable `ARGS`
+defaults to `--debug`.
+
+    $ docker run --env ARGS="--debug --snmp-community=foo" --env RUN_ARGS="--metrics" ...
+
+### Configuration file
+
+Use a [configuration file](#global-configuration-file) by mounting it into the container.
+
+    $ docker run -v $(pwd)/prometheus-webhook-snmp.conf:/etc/prometheus-webhook-snmp.conf ...

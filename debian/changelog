@@ -1,3 +1,9 @@
+prometheus-webhook-snmp (1.5-1) stable; urgency=low
+
+  * Issue #26: Fix 'TypeError' when using '--port' argument.
+
+ -- Volker Theile <vtheile@suse.com>  Tue, 15 Sep 2020 12:49:50 +0200
+
 prometheus-webhook-snmp (1.2-1) stable; urgency=low
 
   * Show used configuration settings in debug mode.

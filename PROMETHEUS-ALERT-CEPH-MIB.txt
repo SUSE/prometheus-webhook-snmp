@@ -83,7 +83,7 @@ prometheusAlertNotificationTimestamp OBJECT-TYPE
 ::= { prometheusAlertObjects 8 }
 
 prometheusAlertNotificationRawData OBJECT-TYPE
-    SYNTAX      TimeTicks
+    SYNTAX      DisplayString
     MAX-ACCESS  accessible-for-notify
     STATUS      current
     DESCRIPTION "The raw Prometheus alert as JSON string."
