@@ -117,31 +117,14 @@ host: promalertmgr.foo.com
 port: 9101
 ```
 
-# SNMP schema
+# SNMP Integration
+The original Ceph MIB was created as key component of this project. However, the MIB now
+'lives' inside the main [Ceph project](https://github.com/ceph/ceph) in a file called
+`CEPH-PROMETHEUS-ALERT-MIB.txt` within the src/monitoring/snmp directory. This relocation
+allows updates to Prometheus alerts and the MIB to be performed in a single Pull Request.
 
-## Traps
-
-| OID | Description |
-| :--- | :--- |
-| ``trap-oid-prefix``.1.2.1 | The default trap. This is used if no OID is specified in the alert labels. |
-| ``trap-oid-prefix``.1.2.[2...N] | Custom traps. |
-
-## Objects
-
-The following objects are appended as variable binds to a SNMP trap.
-
-| OID | Type | Description |
-| :--- | :---: | :--- |
-| ``trap-oid-prefix``.1.1.1 | String | The name of the Prometheus alert. |
-| ``trap-oid-prefix``.1.1.2 | String | The status of the Prometheus alert. |
-| ``trap-oid-prefix``.1.1.3 | String | The severity of the Prometheus alert. |
-| ``trap-oid-prefix``.1.1.4 | String | Unique identifier for the Prometheus instance. |
-| ``trap-oid-prefix``.1.1.5 | String | The name of the Prometheus job. |
-| ``trap-oid-prefix``.1.1.6 | String | The Prometheus alert description field. |
-| ``trap-oid-prefix``.1.1.7 | String | Additional Prometheus alert labels as JSON string. |
-| ``trap-oid-prefix``.1.1.8 | Unix timestamp | The time when the Prometheus alert occurred. |
-| ``trap-oid-prefix``.1.1.9 | String | The raw Prometheus alert as JSON string. |
-
+To use the MIB, your target SNMP receiver environment must have the MIB loaded in order
+to translate the alerts. Typically this will mean placing the MIB inside ```/usr/share/snmp/mibs```.
 
 # Docker
 
