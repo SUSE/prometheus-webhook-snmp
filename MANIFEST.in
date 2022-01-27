@@ -1,0 +1,10 @@
+include CHANGELOG.md
+include LICENSE
+include README.md
+
+recursive-exclude tests *
+recursive-exclude tmp *
+recursive-exclude debian *
+recursive-exclude .github *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

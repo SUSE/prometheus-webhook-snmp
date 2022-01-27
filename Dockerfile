@@ -1,10 +1,32 @@
-FROM quay.io/centos/centos:centos8
+FROM quay.io/centos/centos:stream8
 
-RUN dnf -y install centos-release-opstools && \
-    dnf -y install python3-cherrypy python3-PyYAML python3-pysnmp \
-                   python3-dateutil python3-click git \
-                   prometheus-webhook-snmp \
-                   python3-prometheus_client procps-ng lsof && dnf clean all
+RUN INSTALL_PKGS="\
+        procps-ng \
+        telnet \
+        lsof \
+        python3 \
+        python3-devel \
+        gcc \
+        " && \
+    dnf -y --setopt=tsflags=nodocs --setopt=skip_missing_names_on_install=False install $INSTALL_PKGS && \
+    dnf -y clean all
+
+COPY . /source/app
+WORKDIR /source/app
+
+RUN alternatives --set python /usr/bin/python3 && \
+    python -m pip install --upgrade setuptools pip && \
+    python -m pip install wheel && \
+    python -m pip install -r requirements-build.txt && \
+    python -m pip install . && \
+    python -m pip freeze
+
+# Cleanup
+RUN UNINSTALL_PKGS="\ 
+        gcc \
+        " && \
+    dnf remove -y $UNINSTALL_PKGS && \
+    dnf -y clean all
 
 ENV SNMP_COMMUNITY="public"
 ENV SNMP_PORT=162
@@ -15,4 +37,4 @@ ENV ALERT_OID_LABEL="oid"
 
 EXPOSE 9099
 
-CMD ["sh", "-c", "/usr/bin/prometheus-webhook-snmp --debug --snmp-port=$SNMP_PORT --snmp-host=$SNMP_HOST --snmp-community=$SNMP_COMMUNITY --alert-oid-label=$ALERT_OID_LABEL run"]
+CMD ["sh", "-c", "/usr/local/bin/prometheus-webhook-snmp --debug --snmp-port=$SNMP_PORT --snmp-host=$SNMP_HOST --snmp-community=$SNMP_COMMUNITY --alert-oid-label=$ALERT_OID_LABEL run"]
