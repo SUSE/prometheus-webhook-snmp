@@ -184,6 +184,15 @@ def run_http_server(ctx):
     :param ctx: The application context.
     :type ctx: dict
     """
+    if ctx.config['cert'] and ctx.config['key']:
+        cherrypy.config.update({
+            'server.ssl_module': 'builtin',
+            'server.ssl_certificate': ctx.config['cert'],
+            'server.ssl_private_key': ctx.config['key']
+        })
+    elif ctx.config['cert'] or ctx.config['key']:
+        raise Exception("Both '--cert' and '--key' are needed")
+
     cherrypy.config.update({
         'environment': 'production',
         'server.socket_host': ctx.config['host'],
@@ -217,7 +226,9 @@ class Config(dict):
             'trap_default_severity': '',
             'host': '0.0.0.0',
             'port': 9099,
-            'metrics': False
+            'metrics': False,
+            'cert': '',
+            'key': ''
         }
 
     def dump(self):
