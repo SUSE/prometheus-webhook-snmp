@@ -71,11 +71,18 @@ def cli(ctx, debug, snmp_host, snmp_port, snmp_community, snmp_retries,
 @click.option('--metrics',
               is_flag=True,
               help='Provide Prometheus metrics from this receiver.')
+@click.option('--cert',
+              help='The CA certificate for setting up HTTPS. '
+                   'Need to be used with --key. Without this option, HTTP is used.')
+@click.option('--key',
+              help='The CA private key for setting up HTTPS. Need to be used with --cert.')
 @pass_context
-def run(ctx, host, port, metrics):
+def run(ctx, host, port, metrics, cert, key):
     ctx.config['host'] = host
     ctx.config['port'] = port
     ctx.config['metrics'] = True if metrics else None
+    ctx.config['cert'] = cert
+    ctx.config['key'] = key
     ctx.config.dump()
     utils.run_http_server(ctx)
     sys.exit(0)
