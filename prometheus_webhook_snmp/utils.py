@@ -9,7 +9,6 @@ import cherrypy
 import dateutil.parser
 import prometheus_client
 import yaml
-
 from pysnmp import hlapi
 
 logger = logging.getLogger(__name__)
@@ -76,7 +75,8 @@ def parse_notification(config, notification):
             alertname = labels.pop('alertname', None)
             summary = annotations.pop('summary', None)
             description = annotations.pop('description', None)
-            timestamp = int(time.replace(tzinfo=datetime.timezone.utc).timestamp())
+            timestamp = int(time.replace(
+                tzinfo=datetime.timezone.utc).timestamp())
 
             result.append({
                 'oid': labels.pop(config['alert_oid_label'],
@@ -249,7 +249,7 @@ class Config(dict):
         ]
         for path_name in path_names:
             try:
-                with open(path_name, 'r') as stream:
+                with open(path_name, 'r', encoding='UTF-8') as stream:
                     config = yaml.safe_load(stream)
                     # Automatically convert hyphens to underscores.
                     for key in list(config.keys()):

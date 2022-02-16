@@ -1,10 +1,10 @@
 import unittest
-import mock
 
+import mock
 from pyfakefs import fake_filesystem
 
-from prometheus_webhook_snmp.utils import parse_notification, Config, \
-    send_snmp_trap
+from prometheus_webhook_snmp.utils import (Config, parse_notification,
+                                           send_snmp_trap)
 
 NOTIFICATION_FIRING = {
     'receiver': 'test-01',
@@ -145,7 +145,8 @@ class ConfigTestCase(unittest.TestCase):
         config = Config()
         config['snmp_community'] = 'private'
         config.reset('snmp_community')
-        self.assertEqual(config['snmp_community'], Config.defaults()['snmp_community'])
+        self.assertEqual(config['snmp_community'],
+                         Config.defaults()['snmp_community'])
 
     def test_reset_all(self):
         config = Config()
