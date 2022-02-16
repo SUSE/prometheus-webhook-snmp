@@ -1,7 +1,8 @@
 import json
-import cherrypy
 
+import cherrypy
 from cherrypy.test import helper
+
 from prometheus_webhook_snmp.utils import Context, Root, get_http_server_config
 
 
