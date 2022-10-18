@@ -14,6 +14,11 @@ To start the receiver execute the command:
 
     $ ./prometheus-webhook-snmp run
 
+To start with HTTPS, pass the certificate and key parameters:
+
+    $ ./prometheus-webhook-snmp --cert "certificate.pem" --key "key.pem" run
+
+Note: Both '--cert' and '--key' are needed to enable HTTPS.
 # Send a test SNMP trap
 
 If you want to send a test SNMP trap, then simply execute the following command. This can be used to test your command line parameters.

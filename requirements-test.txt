@@ -1,0 +1,2 @@
+pyfakefs==3.5.8
+pytest==4.4.0

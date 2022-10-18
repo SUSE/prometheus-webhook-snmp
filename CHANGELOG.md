@@ -1,5 +1,7 @@
 v1.5
   * Issue #26: Fix 'TypeError' when using '--port' argument.
+  * Add HTTPS support. Use the arguments '--cert' and '--key' to configure
+    the SSL certificate (in PEM format).
 
 v1.4
   * Issue #22: Prevent Python type errors when sending an SNMP trap.
