@@ -14,5 +14,6 @@ setuptools_scm<6.0,>=3.3.1
 setuptools_scm>=1.15
 setuptools_scm[toml]>=3.4.1
 setuptools_scm_git_archive>=1.0
+pip>=21
 toml
 wheel

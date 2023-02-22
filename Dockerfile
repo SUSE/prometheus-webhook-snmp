@@ -1,5 +1,7 @@
 FROM quay.io/centos/centos:stream8
 
+# >> ignore SC2086 because passing quoted env vars to dnf causes issues (fail to install)
+# hadolint ignore=SC2086
 RUN INSTALL_PKGS="\
         procps-ng \
         telnet \
@@ -15,14 +17,14 @@ COPY . /source/app
 WORKDIR /source/app
 
 RUN alternatives --set python /usr/bin/python3 && \
-    python -m pip install --upgrade setuptools pip && \
-    python -m pip install wheel && \
-    python -m pip install -r requirements-build.txt && \
-    python -m pip install . && \
+    python -m pip install --no-cache-dir -r requirements-build.txt && \
+    python -m pip install --no-cache-dir . && \
     python -m pip freeze
 
 # Cleanup
-RUN UNINSTALL_PKGS="\ 
+# >> ignore SC2086 because passing quoted env vars to dnf causes issues (fail to install)
+# hadolint ignore=SC2086
+RUN UNINSTALL_PKGS="\
         gcc \
         " && \
     dnf remove -y $UNINSTALL_PKGS && \
