@@ -42,4 +42,4 @@ ENV TRAP_DEFAULT_SEVERITY=""
 
 EXPOSE 9099
 
-CMD ["sh", "-c", "/usr/local/bin/prometheus-webhook-snmp --debug --snmp-port=$SNMP_PORT --snmp-host=$SNMP_HOST --snmp-community=$SNMP_COMMUNITY --snmp-retries=$SNMP_RETRIES --snmp-timeout $SNMP_TIMEOUT --alert-oid-label=$ALERT_OID_LABEL --trap-oid-prefix=$TRAP_OID_PREFIX --trap-default-oid=$TRAP_DEFAULT_OID --trap-default-severity=$TRAP_DEFAULT_SEVERITY run"]
+CMD ["sh", "-c", "/usr/local/bin/prometheus-webhook-snmp --debug --snmp-port=\"${SNMP_PORT}\" --snmp-host=\"${SNMP_HOST}\" --snmp-community=\"${SNMP_COMMUNITY}\" --snmp-retries=\"${SNMP_RETRIES}\" --snmp-timeout=\"${SNMP_TIMEOUT}\" --alert-oid-label=\"${ALERT_OID_LABEL}\" --trap-oid-prefix=\"${TRAP_OID_PREFIX}\" --trap-default-oid=\"${TRAP_DEFAULT_OID}\" --trap-default-severity=\"${TRAP_DEFAULT_SEVERITY}\" run"]
