@@ -1,0 +1,7 @@
+---
+- project:
+    name: infrawatch/prometheus-webhook-snmp
+    github-check:
+      jobs:
+        - stf-crc-latest-nightly_bundles
+        - stf-crc-latest-local_build
